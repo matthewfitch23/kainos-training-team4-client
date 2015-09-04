@@ -21,18 +21,6 @@ public class FriendClient {
 	}
 
 	public Response addFriend(Person friend) {
-		// Ensure not null and name has been entered
-		if (null == friend || friend.getName().isEmpty()) {
-			return Response.status(400).build();
-		}
-
-		// Ensure friend hasn't already been added
-		for(Person person : getFriendsList()) {
-			if (friend.getName() == person.getName()) {
-				return Response.status(400).build();
-			}
-		}
-
 		return webTarget.request().post(
 				Entity.entity(friend, MediaType.APPLICATION_JSON));
 	}
