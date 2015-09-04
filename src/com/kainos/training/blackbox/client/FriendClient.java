@@ -14,20 +14,24 @@ import com.kainos.training.blackboxinterface.model.person.Person;
 
 public class FriendClient {
 	private WebTarget webTarget;
-	
+
 	public FriendClient() {
 		Client client = ClientBuilder.newClient();
 		webTarget = client.target("http://localhost:8910").path("/person");
 	}
-	
+
 	public Response addFriend(Person friend) {
-		
-		return webTarget.request().post(Entity.entity(friend, MediaType.APPLICATION_JSON));
+		if (null == friend || friend.getName().isEmpty()) {
+			return Response.status(400).build();
+		}
+		return webTarget.request().post(
+				Entity.entity(friend, MediaType.APPLICATION_JSON));
 	}
-	
+
 	public List<Person> getFriendsList() {
-		Response response =  webTarget.request().get();
-		return response.readEntity(new GenericType<List<Person>>(){});
+		Response response = webTarget.request().get();
+		return response.readEntity(new GenericType<List<Person>>() {
+		});
 	}
-	
+
 }
